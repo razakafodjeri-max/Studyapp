@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply transition-colors duration-300;
+  }
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  @apply backdrop-blur-xl border border-white/10;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.light .glass-panel {
+  @apply border-black/10;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.glass-card {
+  @apply backdrop-blur-lg border border-white/5 bg-slate-900/30 rounded-2xl transition-all duration-300 hover:border-white/10;
+}
+
+.light .glass-card {
+  @apply border-black/5 bg-slate-100/40 hover:border-black/10;
+}
+
+.glass-input {
+  @apply bg-slate-950/40 border border-white/5 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-purple focus:ring-1 focus:ring-brand-purple transition-all duration-200;
+}
+
+.light .glass-input {
+  @apply bg-white/70 border border-black/10 text-slate-800 placeholder-slate-400 focus:border-brand-purple focus:ring-brand-purple;
+}
+
+/* Neon Glow Accents */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+}
+.glow-purple {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+}
+.glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+/* Custom Titlebar Drag Utilities */
+.titlebar-drag {
+  -webkit-app-region: drag;
+}
+
+.titlebar-nodrag {
+  -webkit-app-region: no-drag;
+}
+
+/* Transitions and Layouts */
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hide default input type number buttons */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Custom Slider Styles */
+input[type="range"] {
+  @apply h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  @apply w-4 h-4 bg-brand-purple rounded-full appearance-none transition-all duration-150 active:scale-125;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
+}
+
+/* ==========================================================================
+   HIGH CONTRAST ACCESSIBILITY STYLES (.contrast-125)
+   ========================================================================== */
+.contrast-125, .contrast-125 body {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Glass Panels & Cards in Dark High Contrast */
+.contrast-125 .glass-panel,
+.contrast-125 .glass-card,
+.contrast-125 aside,
+.contrast-125 header {
+  background: #000000 !important;
+  border: 2px solid #ffffff !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.contrast-125 .glass-input,
+.contrast-125 select,
+.contrast-125 input {
+  background: #000000 !important;
+  border: 2px solid #ffffff !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Text Overrides for Dark High Contrast */
+.contrast-125 h1, 
+.contrast-125 h2, 
+.contrast-125 h3, 
+.contrast-125 h4, 
+.contrast-125 h5, 
+.contrast-125 h6, 
+.contrast-125 p, 
+.contrast-125 span, 
+.contrast-125 label, 
+.contrast-125 td, 
+.contrast-125 th, 
+.contrast-125 button,
+.contrast-125 nav a,
+.contrast-125 li {
+  color: #ffffff !important;
+}
+
+/* Light Theme High Contrast Overrides */
+.contrast-125.light, .contrast-125.light body {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.contrast-125.light .glass-panel,
+.contrast-125.light .glass-card,
+.contrast-125.light aside,
+.contrast-125.light header {
+  background: #ffffff !important;
+  border: 2px solid #000000 !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.contrast-125.light .glass-input,
+.contrast-125.light select,
+.contrast-125.light input {
+  background: #ffffff !important;
+  border: 2px solid #000000 !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+}
+
+.contrast-125.light h1, 
+.contrast-125.light h2, 
+.contrast-125.light h3, 
+.contrast-125.light h4, 
+.contrast-125.light h5, 
+.contrast-125.light h6, 
+.contrast-125.light p, 
+.contrast-125.light span, 
+.contrast-125.light label, 
+.contrast-125.light td, 
+.contrast-125.light th, 
+.contrast-125.light button,
+.contrast-125.light nav a,
+.contrast-125.light li {
+  color: #000000 !important;
+}
+
+/* Interactive feedback focus outlines */
+.contrast-125 *:focus {
+  outline: 3px solid #00ffff !important;
+}
+.contrast-125.light *:focus {
+  outline: 3px solid #ff00ff !important;
+}
+
+/* Buttons and accents */
+.contrast-125 button:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+.contrast-125.light button:hover {
+  background: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+

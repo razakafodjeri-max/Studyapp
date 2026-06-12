@@ -1,0 +1,64 @@
+{
+  "name": "studyflow",
+  "version": "1.0.0",
+  "description": "StudyFlow - Assistant intelligent de concentration basé sur la méthode Pomodoro adaptative",
+  "main": "dist/main/index.js",
+  "author": "Antigravity",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build:main": "esbuild src/main/index.ts src/preload/index.ts --bundle --platform=node --outdir=dist --external:electron --external:node:sqlite",
+    "build:renderer": "vite build",
+    "build": "npm run build:main && npm run build:renderer",
+    "package": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@tensorflow-models/blazeface": "^0.1.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.20.0",
+    "@tensorflow/tfjs-core": "^4.20.0",
+    "chart.js": "^4.4.3",
+    "framer-motion": "^11.2.10",
+    "lucide-react": "^0.395.0",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.4.19",
+    "electron": "^30.0.9",
+    "electron-builder": "^24.13.3",
+    "esbuild": "^0.21.5",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  },
+  "build": {
+    "appId": "com.studyflow.app",
+    "productName": "StudyFlow",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "zip",
+        "dir"
+      ]
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Utility"
+    }
+  }
+}
