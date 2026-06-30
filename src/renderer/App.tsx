@@ -25,7 +25,7 @@ import { speak } from './utils/speech';
 
 const App: React.FC = () => {
   const { currentTab, setCurrentTab, settings, updateSetting, resolvedTheme } = useApp();
-  const { startTimer, pauseTimer, resetTimer, skipSession, isActive, mode } = useTimer();
+  const { startTimer, pauseTimer, resetTimer, skipSession, isActive, mode, announceRemainingTime } = useTimer();
 
   // Annonce vocale du changement d'onglet
   useEffect(() => {
@@ -91,6 +91,9 @@ const App: React.FC = () => {
           e.preventDefault();
           updateSetting('enableSpeech', !settings.enableSpeech);
           speak(!settings.enableSpeech ? "Aide vocale activée." : "Aide vocale désactivée.");
+        } else if (key === 'u') {
+          e.preventDefault();
+          announceRemainingTime();
         }
         // Navigation
         else if (key === 'd') {
@@ -114,7 +117,7 @@ const App: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isActive, startTimer, pauseTimer, resetTimer, skipSession, settings, updateSetting, setCurrentTab]);
+  }, [isActive, startTimer, pauseTimer, resetTimer, skipSession, settings, updateSetting, setCurrentTab, announceRemainingTime]);
 
   // Exclude sidebar and titlebar during onboarding
   if (currentTab === 'onboarding') {

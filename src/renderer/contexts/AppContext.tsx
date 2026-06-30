@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Task } from '../../main/db';
+import { speak } from '../utils/speech';
 
 export type TabType = 'dashboard' | 'tasks' | 'analytics' | 'settings' | 'onboarding' | 'guide';
 
@@ -164,8 +165,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const saveTask = async (task: Task) => {
     try {
+      const existing = tasks.find(t => t.id === task.id);
       await window.electronAPI.db.saveTask(task);
       await loadTasks();
+      if (settings.enableSpeech) {
+        if (!existing) {
+          speak(`Tâche ajoutée : ${task.title}`);
+        } else if (!existing.completed && task.completed) {
+          speak(`Tâche terminée : ${task.title}`);
+        } else if (existing.completed && !task.completed) {
+          speak(`Tâche réactivée : ${task.title}`);
+        } else {
+          speak(`Tâche mise à jour : ${task.title}`);
+        }
+      }
     } catch (e) {
       console.error('Error saving task:', e);
     }
@@ -173,8 +186,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const deleteTask = async (id: string) => {
     try {
+      const existing = tasks.find(t => t.id === id);
       await window.electronAPI.db.deleteTask(id);
       await loadTasks();
+      if (settings.enableSpeech && existing) {
+        speak(`Tâche supprimée : ${existing.title}`);
+      }
     } catch (e) {
       console.error('Error deleting task:', e);
     }

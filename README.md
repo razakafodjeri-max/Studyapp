@@ -2,6 +2,8 @@
 
 StudyFlow est une application de bureau haut de gamme conçue pour optimiser vos sessions de travail. Basée sur une approche **Pomodoro adaptative**, l'application ajuste dynamiquement la durée de vos cycles de travail et de repos en mesurant votre niveau d'attention en temps réel.
 
+> 📘 **Nouveau sur le projet ?** [Consultez notre Guide d'Installation Simple (pour les non-initiés)](./GUIDE_INSTALLATION.md) pour installer l'application toute prête sur Windows, Mac ou Linux en 1 clic, sans outils de développement.
+
 ---
 
 ## 🌟 Fonctionnalités Clés

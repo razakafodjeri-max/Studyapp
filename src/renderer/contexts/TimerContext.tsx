@@ -25,6 +25,7 @@ interface TimerContextType {
   adaptiveAdvice: string;
   cameraStream: MediaStream | null;
   setCustomDuration: (minutes: number) => void;
+  announceRemainingTime: () => void;
 }
 
 const TimerContext = createContext<TimerContextType | undefined>(undefined);
@@ -266,9 +267,9 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 lastFacePositionRef.current = { x: normX, y: normY };
               }
 
-              // Override: If the camera doesn't detect a face (absent) but the user is actively typing/clicking (idleTime < 10s),
-              // then they are not absent! They are focused.
-              if (status === 'absent' && idleTime < 10) {
+              // Override: If the user is actively typing or clicking (idleTime < 8s), they are focused,
+              // even if the camera thinks they are absent or distracted (e.g. looking at another screen or their keyboard).
+              if ((status === 'absent' || status === 'distracted') && idleTime < 8) {
                 status = 'focused';
               }
 
@@ -431,6 +432,9 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
     setDuration(secs);
     setTimeLeft(secs);
+    if (settings.enableSpeech) {
+      speak(`Durée réglée à ${minutes} minute${minutes > 1 ? 's' : ''}.`);
+    }
   };
 
   // Handle Session completion
@@ -484,6 +488,40 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch (e) {
       console.error('Failed to save session:', e);
     }
+  };
+
+  // Periodic remaining time vocalization for visually impaired users
+  useEffect(() => {
+    if (settings.enableSpeech && isActive) {
+      const mins = Math.floor(timeLeft / 60);
+      const secs = timeLeft % 60;
+      
+      // Announce at specific milestones:
+      // - Every 5 minutes (e.g. 20, 15, 10, 5)
+      // - Every minute under 5 minutes (4, 3, 2, 1)
+      // - At 30 seconds, 15 seconds, and 10 seconds
+      if (secs === 0) {
+        if (mins > 0 && (mins % 5 === 0 || mins < 5)) {
+          speak(`Il reste ${mins} minute${mins > 1 ? 's' : ''}.`);
+        }
+      } else if (mins === 0) {
+        if (secs === 30 || secs === 15 || secs === 10) {
+          speak(`Il reste ${secs} secondes.`);
+        }
+      }
+    }
+  }, [timeLeft, isActive, settings.enableSpeech]);
+
+  const announceRemainingTime = () => {
+    const mins = Math.floor(timeLeft / 60);
+    const secs = timeLeft % 60;
+    let text = "";
+    if (mins > 0) {
+      text = `Il reste ${mins} minute${mins > 1 ? 's' : ''} ${secs > 0 ? `et ${secs} seconde${secs > 1 ? 's' : ''}` : ''}.`;
+    } else {
+      text = `Il reste ${secs} seconde${secs > 1 ? 's' : ''}.`;
+    }
+    speak(text);
   };
 
   // Adaptive Rules implementation
@@ -564,7 +602,8 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setFocusStatus,
         adaptiveAdvice,
         cameraStream,
-        setCustomDuration
+        setCustomDuration,
+        announceRemainingTime
       }}
     >
       {children}

@@ -49,6 +49,7 @@ const Guide: React.FC = () => {
     { keys: "Ctrl + Shift + N", desc: "Activer ou désactiver les notifications de bureau" },
     { keys: "Ctrl + Shift + H", desc: "Activer ou désactiver le mode contraste élevé" },
     { keys: "Ctrl + Shift + V", desc: "Activer ou désactiver la synthèse vocale (aide malvoyants)" },
+    { keys: "Ctrl + Shift + U", desc: "Annoncer vocalement le temps restant du minuteur" },
     { keys: "Ctrl + Shift + D", desc: "Aller à l'onglet Tableau de bord" },
     { keys: "Ctrl + Shift + T", desc: "Aller à l'onglet Liste des tâches" },
     { keys: "Ctrl + Shift + A", desc: "Aller à l'onglet Statistiques Analytiques" },
@@ -140,6 +141,9 @@ const Guide: React.FC = () => {
                   </li>
                   <li>
                     <span className="font-semibold text-slate-800 dark:text-slate-200">Accessibilité Intégrée :</span> Synthèse vocale complète en français et mode contraste élevé disponibles via les raccourcis.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">Installation Autonome :</span> L'application s'installe d'un simple double-clic sur l'installateur généré (Windows, Mac ou Linux) sans aucun outil technique.
                   </li>
                 </ul>
               </div>

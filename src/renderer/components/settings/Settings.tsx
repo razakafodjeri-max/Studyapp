@@ -34,6 +34,9 @@ const Settings: React.FC = () => {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      if (settings.enableSpeech) {
+        speak("Données exportées avec succès.");
+      }
     } catch (e) {
       console.error('Failed to export data:', e);
       alert('Erreur lors de l\'exportation des données.');
@@ -82,7 +85,13 @@ const Settings: React.FC = () => {
                 <p className="text-[10px] text-slate-500 dark:text-slate-400">Permet à StudyFlow de modifier la durée du Pomodoro selon votre niveau de concentration.</p>
               </div>
               <button
-                onClick={() => updateSetting('enableAI', !settings.enableAI)}
+                onClick={() => {
+                  const nextVal = !settings.enableAI;
+                  updateSetting('enableAI', nextVal);
+                  if (settings.enableSpeech) {
+                    speak(nextVal ? "Adaptation par intelligence artificielle activée." : "Adaptation par intelligence artificielle désactivée.");
+                  }
+                }}
                 className={`relative inline-flex h-5.5 w-10 items-center rounded-full transition-colors cursor-pointer ${settings.enableAI ? 'bg-brand-purple' : 'bg-slate-700'}`}
               >
                 <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${settings.enableAI ? 'translate-x-5' : 'translate-x-1'}`} />
@@ -99,7 +108,13 @@ const Settings: React.FC = () => {
                 <p className="text-[10px] text-slate-500 dark:text-slate-400">Utilise la détection de visage en temps réel pour évaluer votre attention. Si désactivé, le suivi par activité clavier/souris prend le relais.</p>
               </div>
               <button
-                onClick={() => updateSetting('enableWebcam', !settings.enableWebcam)}
+                onClick={() => {
+                  const nextVal = !settings.enableWebcam;
+                  updateSetting('enableWebcam', nextVal);
+                  if (settings.enableSpeech) {
+                    speak(nextVal ? "Analyse par webcam activée." : "Analyse par webcam désactivée.");
+                  }
+                }}
                 className={`relative inline-flex h-5.5 w-10 items-center rounded-full transition-colors cursor-pointer ${settings.enableWebcam ? 'bg-brand-cyan' : 'bg-slate-700'}`}
               >
                 <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${settings.enableWebcam ? 'translate-x-5' : 'translate-x-1'}`} />
@@ -190,7 +205,12 @@ const Settings: React.FC = () => {
               <span className="text-xs font-semibold text-slate-800 dark:text-white">Thème</span>
               <div className="flex gap-1">
                 <button
-                  onClick={() => updateSetting('theme', 'system')}
+                  onClick={() => {
+                    updateSetting('theme', 'system');
+                    if (settings.enableSpeech) {
+                      speak("Thème réglé sur Système.");
+                    }
+                  }}
                   className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all ${
                     settings.theme === 'system' 
                       ? 'bg-brand-cyan/20 border-brand-cyan/40 text-brand-cyan dark:text-brand-cyan-glow shadow-md shadow-brand-cyan/5' 
@@ -201,7 +221,12 @@ const Settings: React.FC = () => {
                   <span>Système</span>
                 </button>
                 <button
-                  onClick={() => updateSetting('theme', 'dark')}
+                  onClick={() => {
+                    updateSetting('theme', 'dark');
+                    if (settings.enableSpeech) {
+                      speak("Thème réglé sur Sombre.");
+                    }
+                  }}
                   className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all ${
                     settings.theme === 'dark' 
                       ? 'bg-brand-purple/20 border-brand-purple/40 text-brand-purple dark:text-brand-purple-glow shadow-md shadow-brand-purple/5' 
@@ -212,7 +237,12 @@ const Settings: React.FC = () => {
                   <span>Sombre</span>
                 </button>
                 <button
-                  onClick={() => updateSetting('theme', 'light')}
+                  onClick={() => {
+                    updateSetting('theme', 'light');
+                    if (settings.enableSpeech) {
+                      speak("Thème réglé sur Clair.");
+                    }
+                  }}
                   className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer transition-all ${
                     settings.theme === 'light' 
                       ? 'bg-brand-blue/20 border-brand-blue/40 text-brand-blue dark:text-brand-blue-glow shadow-md shadow-brand-blue/5' 
@@ -236,7 +266,13 @@ const Settings: React.FC = () => {
                 min="12" 
                 max="22" 
                 value={settings.fontSize} 
-                onChange={(e) => updateSetting('fontSize', parseInt(e.target.value, 10))}
+                onChange={(e) => {
+                  const nextVal = parseInt(e.target.value, 10);
+                  updateSetting('fontSize', nextVal);
+                  if (settings.enableSpeech) {
+                    speak(`Taille du texte réglée à ${nextVal} pixels.`);
+                  }
+                }}
                 className="w-full"
               />
             </div>
@@ -248,7 +284,13 @@ const Settings: React.FC = () => {
                 <p className="text-[10px] text-slate-550 dark:text-slate-550">Augmente le contraste des contours et des polices.</p>
               </div>
               <button
-                onClick={() => updateSetting('highContrast', !settings.highContrast)}
+                onClick={() => {
+                  const nextVal = !settings.highContrast;
+                  updateSetting('highContrast', nextVal);
+                  if (settings.enableSpeech) {
+                    speak(nextVal ? "Contraste élevé activé." : "Contraste élevé désactivé.");
+                  }
+                }}
                 className={`relative inline-flex h-5.5 w-10 items-center rounded-full transition-colors cursor-pointer ${settings.highContrast ? 'bg-brand-cyan' : 'bg-slate-700'}`}
               >
                 <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${settings.highContrast ? 'translate-x-5' : 'translate-x-1'}`} />
@@ -268,9 +310,7 @@ const Settings: React.FC = () => {
                 onClick={() => {
                   const nextVal = !settings.enableSpeech;
                   updateSetting('enableSpeech', nextVal);
-                  if (nextVal) {
-                    speak("Aide vocale activée.");
-                  }
+                  speak(nextVal ? "Aide vocale activée." : "Aide vocale désactivée.");
                 }}
                 className={`relative inline-flex h-5.5 w-10 items-center rounded-full transition-colors cursor-pointer ${settings.enableSpeech ? 'bg-brand-purple' : 'bg-slate-700'}`}
               >
@@ -288,7 +328,13 @@ const Settings: React.FC = () => {
                 <p className="text-[10px] text-slate-550 dark:text-slate-500">Envoyer des alertes système à la fin des cycles.</p>
               </div>
               <button
-                onClick={() => updateSetting('enableNotifications', !settings.enableNotifications)}
+                onClick={() => {
+                  const nextVal = !settings.enableNotifications;
+                  updateSetting('enableNotifications', nextVal);
+                  if (settings.enableSpeech) {
+                    speak(nextVal ? "Notifications de bureau activées." : "Notifications de bureau désactivées.");
+                  }
+                }}
                 className={`relative inline-flex h-5.5 w-10 items-center rounded-full transition-colors cursor-pointer ${settings.enableNotifications ? 'bg-brand-purple' : 'bg-slate-700'}`}
               >
                 <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${settings.enableNotifications ? 'translate-x-5' : 'translate-x-1'}`} />

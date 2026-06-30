@@ -80,7 +80,7 @@ export async function classifyWebcamFocus(
       const cameraMidX = canvasWidth / 2;
       const centerDev = Math.abs(faceMidX - cameraMidX) / canvasWidth;
 
-      if (centerDev > 0.28) {
+      if (centerDev > 0.32) {
         return { status: 'distracted', faceBox };
       }
 
@@ -130,7 +130,7 @@ export async function classifyWebcamFocus(
       const cameraMidX = canvasWidth / 2;
       const centerDev = Math.abs(faceMidX - cameraMidX) / canvasWidth;
 
-      if (centerDev > 0.28) {
+      if (centerDev > 0.32) {
         return { status: 'distracted', faceBox };
       }
     }

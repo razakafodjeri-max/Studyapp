@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Session, FocusLog } from '../../main/db';
+import { useApp } from '../../contexts/AppContext';
+import { speak } from '../../utils/speech';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -40,6 +42,7 @@ ChartJS.register(
 );
 
 const Analytics: React.FC = () => {
+  const { settings } = useApp();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [focusLogs, setFocusLogs] = useState<FocusLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -179,6 +182,14 @@ const Analytics: React.FC = () => {
   const focusedMins = Math.round((focusedCount * 5) / 60);
   const distractedMins = Math.round((distractedCount * 5) / 60);
   const absentMins = Math.round((absentCount * 5) / 60);
+
+  // Speech feedback for visually impaired users when loading stats
+  useEffect(() => {
+    if (!isLoading && settings.enableSpeech) {
+      const text = `Section statistiques. Vous avez accumulé ${totalWorkMins} minutes de concentration. Votre score de concentration moyen est de ${avgFocusScore} pour cent. Le taux de complétion de vos sessions de travail est de ${completionRate} pour cent.`;
+      speak(text);
+    }
+  }, [isLoading, settings.enableSpeech, totalWorkMins, avgFocusScore, completionRate]);
 
   // 3. Prepare Line Chart: Focus score evolution (last 7 work sessions)
   const recentWorkSessions = [...workSessions].reverse().slice(-7);
